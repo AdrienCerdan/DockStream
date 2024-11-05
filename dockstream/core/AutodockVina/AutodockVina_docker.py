@@ -50,6 +50,7 @@ class AutodockVinaParameters(BaseModel):
     receptor_pdbqt_path: Optional[List[str]] = None
     search_space: SearchSpace
     seed: int = 42
+    exhaustiveness: int = 8  # Default exhaustiveness value
     number_poses: int = 1
 
     def get(self, key: str) -> Any:
@@ -269,6 +270,7 @@ class AutodockVina(Docker, BaseModel):
                      _EE.VINA_SIZE_X, str(search_space.size_x),
                      _EE.VINA_SIZE_Y, str(search_space.size_y),
                      _EE.VINA_SIZE_Z, str(search_space.size_z),
+                     _EE.VINA_EXHAUSTIVENESS, self.parameters.exhaustiveness,  # Add exhaustiveness parameter
                      _EE.VINA_NUM_MODES, self.parameters.number_poses]
 
         execution_result = self._ADV_executor.execute(command=_EE.VINA,
